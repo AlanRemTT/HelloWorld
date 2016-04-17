@@ -1,0 +1,123 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+#include <string.h>#include<CertExit.h>typedef struct stuInfo {	char  stuName[10];   // 姓名	long    age;       // 生日（格式19940424）} ElemType;typedef struct node {	ElemType data;	struct  node *next;} ListNode, *ListPtr;ListPtr *ListInit(ListPtr L) {	L = (ListNode *)malloc(sizeof(ListNode));	if (L == NULL) {		printf("申请空间失败");		exit(0);	}	L->next = NULL;}void ListInsert(ListPtr *L,char name,long age)  //带头节点插入
+{
+	ListNode *q, *pre,*p;
+	q = (ListNode *)malloc(sizeof(ListNode));
+	if (q == NULL)
+	{
+		printf("申请空间失败！");
+		exit(0);
+	}
+	*q->data.stuName = name;
+	q->data.age = age;
+	pre = L;
+	while ((pre != NULL) && ((pre->next) != p))
+		pre = pre->next;
+
+	q->next = pre->next;
+	pre->next = q;
+}
+void ListDel(ListPtr *L, ElemType e)  //带头删除
+{
+	ListNode *p;
+	ListNode *pre;
+	pre = L;
+	while ((pre != NULL) && ((&pre->next->data.age) != e.age)||((&pre->next->data.stuName)!=e.stuName))
+		pre = pre->next;
+	p = pre->next;
+
+	if (p != NULL)
+	{
+		pre->next = p->next;
+		free(p);
+	}
+}
+void ListCatch(ListPtr *L1, ListPtr *L2,ListPtr *L3) 
+{
+	ListNode *pa, *pb, *pc;
+	pa = L1;
+	pb = L2;
+
+	if (pa->data.age <= pb->data.age) {
+		pc = pa;
+		pa = pa->next;
+		L3 = pc;
+	}
+	else {
+		pc = pb;
+		pb = pb->next;
+		L3 = pc;
+	}
+	while ((pa != NULL) && (pb != NULL)) {
+		if (pa->data.age <= pb->data.age) {
+			pc->next = pa;
+			pc = pa;
+			pa = pa->next;
+		}
+		else {
+			pc->next = pb;
+			pc = pb;
+			pb = pb->next;
+		}
+	}
+	if (pa != NULL)
+		pc->next = pa;
+	else
+		pc->next = pb;
+	free(pb);
+	return L3;
+}
+void ListPrint(ListPtr *L)
+{
+
+}
+void Index()
+{
+	printf("表1插入数据请输入1\n表2插入数据请输入2\n表1删除数据请输入3\n表2删除数据请输入4\n表一表二合并并打印请输入5\n");
+}
+int main()
+{
+	int n;
+	long age;
+	char name[10];
+	ElemType e;
+	ListPtr *L1 = 0;
+	ListPtr *L2 = 0;
+	ListPtr *L3 = 0;
+	L1 = ListInit(L1);
+	L2 = ListInit(L2);
+	L3 = LIstInit(L3);
+	index();
+	scanf("%d", &n);
+	switch (n){
+	case 1: printf("请输入姓名：\n"); scanf("%s", &name);
+		    printf("请输入生日：\n"); scanf("%ld", &age);
+		    ListInsert(&L1, name, age);
+			index();
+		    break;
+	case 2: printf("请输入姓名：\n"); scanf("%s", &name);
+		    printf("请输入生日：\n"); scanf("%ld", &age);
+		    ListInsert(&L2, name, age);
+			index();
+			break;
+	case 3: printf("请输入姓名：\n"); scanf("%s", &name);
+		    printf("请输入生日：\n"); scanf("%ld", &age);
+			e.age = age; 
+			e.stuName = name;
+		    ListDel(&L1,e);
+			index();
+			break;
+	case 4: printf("请输入姓名：\n"); scanf("%s", &name);
+		    printf("请输入生日：\n"); scanf("%ld", &age);
+		    e.age = age;
+		    e.stuName = name;
+		    ListDel(&L2, e);
+			index();
+		    break;
+	case 5: ListCatch(&L1, &L2,&L3);
+		    ListPrint(&L3);
+	}
+			return 0;
+}
